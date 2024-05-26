@@ -1,1 +1,1 @@
-# pseudoco-8th-gourmet-recommend
+# pseudocon-8th-gourmet-recommend
