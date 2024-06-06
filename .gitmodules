@@ -1,0 +1,3 @@
+[submodule "projects/naver_review_langgraph"]
+	path = projects/naver_review_langgraph
+	url = https://github.com/ehddnr301/naver_review_langgraph
