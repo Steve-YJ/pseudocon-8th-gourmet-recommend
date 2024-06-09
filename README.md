@@ -23,7 +23,7 @@ sudo docker compose up -d
 필요 패키지 추가 방법
 ```commandline
 sudo vim requirements.txt # 필요 패키지 추가
-sudo docker compose up —build -d
+sudo docker compose up --build -d
 ```
 ### Test Environment
 로컬에서 테스트를 위해서 LocalExecutor Airflow를 띄워놓고 사용한다.
