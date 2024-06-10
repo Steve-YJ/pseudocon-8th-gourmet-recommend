@@ -39,12 +39,15 @@ def make_request_with_retry(url, headers, json_data, retries=5, backoff_factor=1
     return None
 
 # 데이터 프레임을 Google Cloud Storage에 업로드하는 함수
-def upload_to_gcs(data, bucket_name, destination_file_name, key_path):
+def upload_to_gcs(data, bucket_name, destination_file_name):
+    # Airflow Variable에서 key_path 값 가져오기
+    key_path = Variable.get("gcp_key")
+
     KST = pytz.timezone('Asia/Seoul')
     today = datetime.now(KST).date()
     date_path = today.strftime('%Y/%m/%d')
 
-    credentials = service_account.Credentials.from_service_account_file(key_path)
+    credentials = service_account.Credentials.from_service_account_info(key_path)
     storage_client = storage.Client(credentials=credentials)
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(destination_file_name)
@@ -86,7 +89,6 @@ def run_crawler(**context):
     search_keyword = context['task_instance'].xcom_pull(task_ids='get_keyword', key='search_keyword')  # XCom에서 키워드 가져오기
     file_prefix = korean_romanizer_converter(search_keyword)
     destination_file_name = f'{search_keyword}.parquet'
-    key_path = "./key.json"
     bucket_name = "naver-placeid-crawler-data-lake"
 
     current_page = 0
@@ -137,7 +139,7 @@ def run_crawler(**context):
             if response and response.json()['data']['restaurants']['items']:
                 items = response.json()['data']['restaurants']['items']
                 file_name = f"{file_prefix}/{date_path}/page{current_page}_items.parquet"
-                upload_to_gcs(items, bucket_name, file_name, key_path)  # 데이터를 GCS에 업로드
+                upload_to_gcs(items, bucket_name, file_name)  # 데이터를 GCS에 업로드
                 all_data.extend(items)
                 current_page += 1
                 time.sleep(10)  # 페이지당 10초 간격으로 요청
@@ -146,7 +148,7 @@ def run_crawler(**context):
 
         df = pd.DataFrame(all_data)
         file_name = f"{file_prefix}/{date_path}/LOAD_{destination_file_name}"
-        upload_to_gcs(df, bucket_name, file_name, key_path)  # 모든 데이터를 GCS에 업로드
+        upload_to_gcs(df, bucket_name, file_name)  # 모든 데이터를 GCS에 업로드
 
     except Exception as ex:
         print(f"크롤링 에러 발생: {ex}")
