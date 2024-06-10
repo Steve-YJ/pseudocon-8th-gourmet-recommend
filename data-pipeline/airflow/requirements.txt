@@ -1,1 +1,9 @@
 apache-airflow-providers-google
+pytz
+requests
+pandas
+korean-romanizer
+google-cloud-storage
+google-auth
+redis
+apache-airflow
