@@ -87,6 +87,10 @@ def run_crawler(**context):
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
     }
     search_keyword = context['task_instance'].xcom_pull(task_ids='get_keyword', key='search_keyword')  # XCom에서 키워드 가져오기
+    if search_keyword is None:
+        print("키워드가 없습니다.")
+        return  # 키워드가 없으면 함수 종료
+
     file_prefix = korean_romanizer_converter(search_keyword)
     destination_file_name = f'{search_keyword}.parquet'
     bucket_name = "naver-placeid-crawler-data-lake"
@@ -171,6 +175,7 @@ dag = DAG(
     default_args=default_args,
     description='Naver Place Crawler DAG',
     schedule_interval=timedelta(days=1),
+    catchup=False  # catchup 비활성화
 )
 
 # 키워드를 가져오는 태스크
