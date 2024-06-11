@@ -46,8 +46,10 @@ def upload_to_gcs(data, bucket_name, destination_file_name):
     KST = pytz.timezone('Asia/Seoul')
     today = datetime.now(KST).date()
     date_path = today.strftime('%Y/%m/%d')
-
-    credentials = service_account.Credentials.from_service_account_info(key_path)
+    
+    # key_path를 JSON 객체로 저장
+    key_dict = json.loads(key_path)
+    credentials = service_account.Credentials.from_service_account_info(key_dict)
     storage_client = storage.Client(credentials=credentials)
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(destination_file_name)
@@ -195,4 +197,5 @@ run_crawler_task = PythonOperator(
 
 # 태스크 간의 의존성 설정
 get_keyword_task >> run_crawler_task
+
 
