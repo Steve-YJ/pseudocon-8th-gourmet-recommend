@@ -2,6 +2,7 @@ import pytz
 import time
 import re
 import requests
+import json  # 추가된 부분
 from datetime import timedelta, datetime
 import pandas as pd
 from korean_romanizer.romanizer import Romanizer
@@ -46,7 +47,7 @@ def upload_to_gcs(data, bucket_name, destination_file_name):
     KST = pytz.timezone('Asia/Seoul')
     today = datetime.now(KST).date()
     date_path = today.strftime('%Y/%m/%d')
-    
+
     # key_path를 JSON 객체로 저장
     key_dict = json.loads(key_path)
     credentials = service_account.Credentials.from_service_account_info(key_dict)
