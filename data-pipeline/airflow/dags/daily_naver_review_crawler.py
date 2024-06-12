@@ -106,8 +106,7 @@ def gcs_to_bigquery(bq_review_table, gcs_bucket, gcs_prefix):
           uris = ['gs://{gcs_bucket}/{gcs_prefix}/*.parquet']);
     """,
     load_query_job = bigquery_client.query(load_query)
-    result = load_query_job.result()
-    return result.state
+    return load_query_job.state
 
 
 kst = pendulum.timezone("Asia/Seoul")
