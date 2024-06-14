@@ -25,7 +25,7 @@ with DAG(
             "load": {
                 "sourceUris": ["gs://naver-placeid-crawler-data-lake/{{ macros.ds_format(ds, '%Y-%m-%d', '%Y/%m/%d') }}/*.parquet"],
                 "destinationTable": {
-                    "projectId": "your_project_id",
+                    "projectId": "pseudocon-24-summer",
                     "datasetId": "place_id",
                     "tableId": "temp_crawler_data",
                 },
