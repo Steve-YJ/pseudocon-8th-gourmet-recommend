@@ -80,4 +80,3 @@ run_crawler_task = PythonOperator(
 )
 
 get_keyword_task >> run_crawler_task
-
