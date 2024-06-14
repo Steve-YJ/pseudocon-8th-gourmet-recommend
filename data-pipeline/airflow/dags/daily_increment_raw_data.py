@@ -14,7 +14,7 @@ with DAG(
     'daily_increment_raw_data',
     default_args=default_args,
     description='Daily data pipeline to load, transform and clean up data',
-    schedule_interval='5 15 * * *', -- 한국시각(UTC+09) 기준 00시 05분
+    schedule_interval='5 15 * * *', # 한국시각(UTC+09) 기준 00시 05분
     catchup=False,
 ) as dag:
 
