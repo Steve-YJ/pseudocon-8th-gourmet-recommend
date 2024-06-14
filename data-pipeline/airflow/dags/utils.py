@@ -148,7 +148,7 @@ def run_crawler(**context):
 
         df = pd.DataFrame(all_data)
         df['search_keyword'] = search_keyword
-        file_name = f"{date_path}/LOAD_{korean_romanizer_converter(search_keyword)}"
+        file_name = f"{date_path}/LOAD_{korean_romanizer_converter(search_keyword)}.parquet"
         upload_to_gcs(df, bucket_name, file_name)
     except Exception as ex:
         print(f"크롤링 에러 발생: {ex}")
