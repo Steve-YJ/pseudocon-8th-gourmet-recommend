@@ -19,7 +19,7 @@ dag = DAG(
     'daily_naver_place_crawler',
     default_args=default_args,
     description='Naver Place Crawler DAG',
-    schedule_interval="30 * * * *",
+    schedule_interval="*/20 * * * *",
     catchup=False,
     doc_md="""
     ### 네이버 플레이스 크롤러 DAG
