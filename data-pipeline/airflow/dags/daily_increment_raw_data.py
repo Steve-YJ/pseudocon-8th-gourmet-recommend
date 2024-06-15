@@ -23,15 +23,15 @@ with DAG(
     load_data = BigQueryInsertJobOperator(
         task_id='load_data',
         configuration={
-            "load": {
-                "sourceUris": ["gs://naver-placeid-crawler-data-lake/{{ macros.ds_format(ds, '%Y-%m-%d', '%Y/%m/%d') }}/*.parquet"],
-                "destinationTable": {
-                    "projectId": "pseudocon-24-summer",
-                    "datasetId": "place_id",
-                    "tableId": "temp_crawler_data",
-                },
-                "sourceFormat": "PARQUET",
-                "writeDisposition": "WRITE_TRUNCATE",
+            "query": {
+                "query": """
+                    LOAD DATA OVERWRITE place_id.temp_crawler_data
+                    FROM FILES (
+                      format = 'PARQUET',
+                      uris = ['gs://naver-placeid-crawler-data-lake/{{ macros.ds_format(macros.ds_add(ds, -1), '%Y-%m-%d', '%Y/%m/%d') }}/*.parquet']
+                    );
+                """,
+                "useLegacySql": False,
             }
         },
     )
