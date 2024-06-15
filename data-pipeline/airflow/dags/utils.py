@@ -150,7 +150,7 @@ def run_crawler(**context):
         df['search_keyword'] = search_keyword # search_keyword 추가
 
         # Correcting the column selection and including 'search_keyword'
-        df = df[['id', 'name', 'businessCategory', 'category', 'x', 'y', 'phone', 'roadAddress', 'address', 'commonAddress', 'blogCafeReviewCount', 'visitorReviewCount', 'search_keyword']]
+        df = df[['id', 'name', 'businessCategory', 'category', 'x', 'y', 'phone', 'roadAddress', 'address', 'commonAddress', 'blogCafeReviewCount', 'visitorReviewCount', 'options', 'naverBookingCategory', 'search_keyword']]
 
         file_name = f"{date_path}/LOAD_{korean_romanizer_converter(search_keyword)}.parquet"
         upload_to_gcs(df, bucket_name, file_name)
