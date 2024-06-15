@@ -25,7 +25,7 @@ with DAG(
         configuration={
             "query": {
                 "query": """
-                    LOAD DATA OVERWRITE place_id.temp_crawler_data
+                    LOAD DATA OVERWRITE raw_data.temp_crawler_place_id
                     FROM FILES (
                       format = 'PARQUET',
                       uris = ['gs://naver-placeid-crawler-data-lake/{{ macros.ds_format(macros.ds_add(ds, -1), '%Y-%m-%d', '%Y/%m/%d') }}/*.parquet']
@@ -42,7 +42,7 @@ with DAG(
         configuration={
             "query": {
                 "query": """
-                    INSERT INTO place_id.raw_data
+                    INSERT INTO raw_data.place_id
                     SELECT
                       id AS place_id,
                       name AS shop_name,
@@ -70,7 +70,7 @@ with DAG(
         task_id='drop_temp_table',
         configuration={
             "query": {
-                "query": "DROP TABLE place_id.temp_crawler_data;",
+                "query": "DROP TABLE raw_data.temp_crawler_place_id;",
                 "useLegacySql": False,
             }
         },
