@@ -1,10 +1,11 @@
 from airflow import DAG
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from airflow.utils.dates import days_ago
+from datetime import timedelta, datetime
 
 default_args = {
     'owner': 'youngjeon',
-    'start_date': days_ago(1),
+    'start_date': datetime(2024, 6, 14), # 6월 15일부터 작업 실행
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
