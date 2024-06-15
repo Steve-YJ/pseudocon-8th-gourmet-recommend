@@ -57,6 +57,8 @@ with DAG(
                       IFNULL(REPLACE(blogCafeReviewCount, ',', ''), '0') AS blog_cafe_review_count,
                       IFNULL(REPLACE(visitorReviewCount, ',', ''), '0') AS visitor_review_count,
                       (IFNULL(SAFE_CAST(REPLACE(blogCafeReviewCount, ',', '') AS INT64), 0) + IFNULL(SAFE_CAST(REPLACE(visitorReviewCount, ',', '') AS INT64), 0)) AS total_review_count,
+                      options,
+                      naverBookingCategory AS naver_booking_category,
                       search_keyword
                     FROM place_id.temp_crawler_data;
                 """,
