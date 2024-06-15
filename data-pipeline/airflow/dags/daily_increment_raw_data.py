@@ -19,19 +19,20 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    # Task 1: Load data from GCS to temporary table
+    # Task 1: Load data from GCS to temporary table with CAST
     load_data = BigQueryInsertJobOperator(
         task_id='load_data',
         configuration={
-            "load": {
-                "sourceUris": ["gs://naver-placeid-crawler-data-lake/{{ macros.ds_format(ds, '%Y-%m-%d', '%Y/%m/%d') }}/*.parquet"],
-                "destinationTable": {
-                    "projectId": "pseudocon-24-summer",
-                    "datasetId": "place_id",
-                    "tableId": "temp_crawler_data",
-                },
-                "sourceFormat": "PARQUET",
-                "writeDisposition": "WRITE_TRUNCATE",
+            "query": {
+                "query": """
+                    CREATE OR REPLACE TABLE place_id.temp_crawler_data AS
+                    SELECT
+                      CAST(bookingPickupId AS INT64) AS bookingPickupId,
+                      *
+                    FROM `project.dataset.table`
+                    WHERE _FILE_NAME LIKE 'gs://naver-placeid-crawler-data-lake/{{ macros.ds_format(macros.ds_add(ds, -1), '%Y-%m-%d', '%Y/%m/%d') }}/*.parquet';
+                """,
+                "useLegacySql": False,
             }
         },
     )
