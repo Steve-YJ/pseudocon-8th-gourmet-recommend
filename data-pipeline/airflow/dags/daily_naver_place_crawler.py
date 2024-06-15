@@ -19,7 +19,7 @@ dag = DAG(
     'daily_naver_place_crawler',
     default_args=default_args,
     description='Naver Place Crawler DAG',
-    schedule_interval="*/20 * * * *",
+    schedule_interval="*/5 * * * *",
     catchup=False,
     doc_md="""
     ### 네이버 플레이스 크롤러 DAG
@@ -56,7 +56,7 @@ dag = DAG(
     - **오류 발생 시 이메일**: 네
     - **재시도 횟수**: 1
     - **재시도 지연 시간**: 5분
-    - **스케줄 간격**: 매 30분 간격
+    - **스케줄 간격**: 매 5분 간격
     
     ### 사용법:
     
